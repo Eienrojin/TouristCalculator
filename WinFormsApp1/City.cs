@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinFormsApp1
+﻿namespace WinFormsApp1
 {
     class City
     {
         public City(string name, double transit, double travelPrice, City? transitCity = null, bool europeanCity = true)
         {
-            _name = name;
+            Name = name;
             TransitCost = transit;
             TravelPrice = travelPrice;
             IsEuropeanCity = europeanCity;
@@ -18,7 +12,7 @@ namespace WinFormsApp1
 
         public City(string name, double transit, double travelPrice, bool startCity, bool europeanCity = true)
         {
-            _name = name;
+            Name = name;
             TransitCost = transit;
             TravelPrice = travelPrice;
             StartCity = startCity;
@@ -28,7 +22,7 @@ namespace WinFormsApp1
         public void AddTransitCity(City city) =>
             TransitCity = city;
 
-        public readonly string _name;
+        public readonly string Name;
         public double TransitCost { get; set; }
         public double TravelPrice { get; set; }
         public bool IsEuropeanCity { get; set; }
@@ -38,7 +32,7 @@ namespace WinFormsApp1
 
         public override string ToString()
         {
-            return $"{_name}";
+            return $"{Name}";
         }
     }
 }

@@ -11,12 +11,12 @@ namespace WinFormsApp1
         public int Budget { get; set; } = 0;
         public int CountOfCities { get; set; } = 0;
         public bool IsEuropean { get; set; } = true;
-        private List<City> cities = InitCities();
-        public City? startCity { get; set; }
-        public List<City> citiesForTravel { get; set; } = new List<City>();
+        private static List<City> _cities = InitCities();
+        public City? StartCity { get; set; }
+        public List<City> CitiesForTravel { get; set; } = new List<City>();
 
         //Инициализирует список представленных в тз городов
-        static List<City> InitCities()
+        public static List<City> InitCities()
         {
             List<City> list = new List<City>();
             var Berlin = new City("Берлин", 175, 399);
@@ -52,62 +52,20 @@ namespace WinFormsApp1
 
             return list;
         }
-        //Возвращает город из списка, который выбирается с клавиатуры
-        static City GetCityByKeyboard(string message, ref List<City> cities)
+
+        public static City? GetCity(string city)
         {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine(message +
-                    "\n1. Берлин" +
-                    "\n2. Прага" +
-                    "\n3. Париж" +
-                    "\n4. Рига" +
-                    "\n5. Лондон" +
-                    "\n6. Ватикан" +
-                    "\n7. Палермо" +
-                    "\n8 .Варшава" +
-                    "\n9. Кишинёв" +
-                    "\nA. Мадрид" +
-                    "\nB. Будапешт");
-
-                var key = Console.ReadKey();
-
-                switch (key.Key)
-                {
-                    case ConsoleKey.D1:
-                        return cities.Find(n => n._name.Equals("Берлин"));
-                    case ConsoleKey.D2:
-                        return cities.Find(n => n._name.Equals("Прага"));
-                    case ConsoleKey.D3:
-                        return cities.Find(n => n._name.Equals("Париж"));
-                    case ConsoleKey.D4:
-                        return cities.Find(n => n._name.Equals("Рига"));
-                    case ConsoleKey.D5:
-                        return cities.Find(n => n._name.Equals("Лондон"));
-                    case ConsoleKey.D6:
-                        return cities.Find(n => n._name.Equals("Ватикан"));
-                    case ConsoleKey.D7:
-                        return cities.Find(n => n._name.Equals("Палермо"));
-                    case ConsoleKey.D8:
-                        return cities.Find(n => n._name.Equals("Варшава"));
-                    case ConsoleKey.D9:
-                        return cities.Find(n => n._name.Equals("Кишинёв"));
-                    case ConsoleKey.A:
-                        return cities.Find(n => n._name.Equals("Мадрид"));
-                    case ConsoleKey.B:
-                        return cities.Find(n => n._name.Equals("Будапешт"));
-                }
-            }
+            return _cities.Find(c => c.Name.Equals(city));
         }
+
         static double CalculateTravelCost(in bool isEuropean, in City startCity, in List<City> citiesToTravel)
         {
             var cost = 0.0;
             var couldRecountRiga = true;
 
             if (citiesToTravel.Count > 1)
-                if (citiesToTravel.FindIndex(c => c._name == "Палермо") != -1)
-                    if (citiesToTravel.FindIndex(c => c._name == "Палермо") + 1 == citiesToTravel.FindIndex(c => c._name == "Рига"))
+                if (citiesToTravel.FindIndex(c => c.Name == "Палермо") != -1)
+                    if (citiesToTravel.FindIndex(c => c.Name == "Палермо") + 1 == citiesToTravel.FindIndex(c => c.Name == "Рига"))
                     {
                         //цены на транзит варшавы и берлина
                         cost = 190 + 175;
@@ -120,9 +78,9 @@ namespace WinFormsApp1
 
                 //Нужно ли проходить через транзитный город
                 if (city.TransitCity != null)
-                    if (city._name.Equals("Рига") && couldRecountRiga)
+                    if (city.Name.Equals("Рига") && couldRecountRiga)
                         tempCost += city.TransitCity.TransitCost;
-                if (city._name.Equals("Рига") == false)
+                if (city.Name.Equals("Рига") == false)
                     tempCost += city.TransitCity.TransitCost;
 
 
@@ -131,9 +89,9 @@ namespace WinFormsApp1
                     tempCost += tempCost * (double)city.Surcharge;
 
                 //особое условие для палермо 
-                if (city._name.Equals("Палермо") && startCity._name.Equals("Лондон"))
+                if (city.Name.Equals("Палермо") && startCity.Name.Equals("Лондон"))
                     tempCost += tempCost * 0.07;
-                else if (city._name.Equals("Палермо") && startCity._name.Equals("Кишинёв"))
+                else if (city.Name.Equals("Палермо") && startCity.Name.Equals("Кишинёв"))
                     tempCost += tempCost * 0.11;
 
                 //Надбавка не европейцам
