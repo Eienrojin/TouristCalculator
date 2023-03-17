@@ -58,7 +58,7 @@ namespace WinFormsApp1
             return _cities.Find(c => c.Name.Equals(city));
         }
 
-        static double CalculateTravelCost(in bool isEuropean, in City startCity, in List<City> citiesToTravel)
+        public static double CalculateTravelCost(in bool isEuropean, in City startCity, in List<City> citiesToTravel)
         {
             var cost = 0.0;
             var couldRecountRiga = true;
@@ -80,7 +80,7 @@ namespace WinFormsApp1
                 if (city.TransitCity != null)
                     if (city.Name.Equals("Рига") && couldRecountRiga)
                         tempCost += city.TransitCity.TransitCost;
-                if (city.Name.Equals("Рига") == false)
+                if (city.Name.Equals("Рига") == false && city.TransitCity != null)
                     tempCost += city.TransitCity.TransitCost;
 
 
